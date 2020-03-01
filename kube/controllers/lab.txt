@@ -42,3 +42,71 @@ kubectl rollout history deploy <deployname> --revision=2   # see the details of 
 kubectl rollout status deploy <deployname>       # get status of rollout 
 kubectl rollout undo deploy <deployname>         # rollback to the previous revision
 kubectl rollout undo deploy <deployname>  --revision=2     # rollback to a specific revision
+
+========================================================================================
+NameSpace:
+kubectl create -f pod-definition.yml            #by default it get created in default namespace
+apiVersion:v1
+kind:Pod
+
+Metadata:
+  Name: myapp-pod
+  labels:
+    app: myapp
+    type: frontend
+spec:
+  containers:
+  name: nginx-container
+  image: nginx
+  
+kubectl create -f pod-definition.yml --namespace=dev  
+apiVersion:v1
+kind:Pod
+
+Metadata:
+  name: myapp-pod
+  namespace: dev                             #can move namespace in yml file metadata section
+  labels:
+    app: myapp
+    type: frontend
+spec:
+  containers:
+  name: nginx-container
+  image: nginx
+  
+#How do you create namespace 
+namespace-dev.yaml
+apiVersion:v1
+kind:Namespace
+
+Metadata:
+  name: dev
+#Run 
+kubectl create -f namespace-dev.yaml
+
+#another way to simply
+kubectl create namespace dev
+
+#to switch permanently the current context to dev in stead of default 
+kubectl config set-context $(kubectl config current-context) --namespace=dev
+kubectl get pod --all-namespaces
+
+#How to define resource quota 
+compute-quota.yaml
+apiVersion:v1
+kind:ResourceQuota 
+
+Metadata:
+  name: compute-quota
+  namespace: dev
+  
+spec:
+  hard:
+  pods: "10"
+  requests.cpu: "4"
+  requests.memory: 5Gi
+  limits.cpu: "10"
+  limits.memory: 10Gi
+  
+  
+
