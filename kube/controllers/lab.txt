@@ -108,5 +108,8 @@ spec:
   limits.cpu: "10"
   limits.memory: 10Gi
   
+ kubectl get namespace                  # check how many namespace currently exixts on system
+ kubectl get pods --namespace=research  #how many pods exixts on namespace research 
+ 
   
 
